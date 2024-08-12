@@ -31,9 +31,9 @@
     <category term="学习记录" scheme="https://dill626.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
     
     
-    <category term="markdown" scheme="https://dill626.github.io/tags/markdown/"/>
-    
     <category term="hexo" scheme="https://dill626.github.io/tags/hexo/"/>
+    
+    <category term="markdown" scheme="https://dill626.github.io/tags/markdown/"/>
     
   </entry>
   
@@ -59,7 +59,7 @@
     <link href="https://dill626.github.io/posts/60687/"/>
     <id>https://dill626.github.io/posts/60687/</id>
     <published>2024-07-04T16:41:31.000Z</published>
-    <updated>2024-08-05T05:36:40.041Z</updated>
+    <updated>2024-08-12T09:55:33.523Z</updated>
     
     
     <summary type="html">用于记录自己建站的过程，因为我什么也不会，操作都是查的教程，要是不记录，以后出了什么问题都不知道去哪里找。</summary>
