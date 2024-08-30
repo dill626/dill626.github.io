@@ -4,6 +4,60 @@
   
     
     <entry>
+      <title>一台电脑两个github账号</title>
+      <link href="/posts/46454/"/>
+      <url>/posts/46454/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h1><p>首先，我有一个github账号A，平时用它自动上传存档我的学习笔记；其次我有一个github账号B，用于维持hexo博客网站运营。当我想用账号B<code>git push</code>备份存档时，报错提示：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permission to xxx（远程仓库账号B） denied to xxx（电脑上的另一个账号A）</span><br></pre></td></tr></table></figure><p>关于如何备份hexo，请看这篇文章<a href="/posts/48088/" title="hexo备份存档">hexo备份存档</a>。</p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="新建ssh"><a href="#新建ssh" class="headerlink" title="新建ssh"></a>新建ssh</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ras -C <span class="string">&quot;邮箱账号&quot;</span></span><br></pre></td></tr></table></figure><p>然后提示：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/Users/XXX/.ssh/id_rsa): </span><br></pre></td></tr></table></figure><p>由于<code>id_rsa</code>这个ssh文件名已经被账号A占用了，于是另取一个名字：输入n</p><p>连续两个回车确认</p><h2 id="同步github上的ssh"><a href="#同步github上的ssh" class="headerlink" title="同步github上的ssh"></a>同步github上的ssh</h2><blockquote><p>这里需要找到新生成的ssh文件<code>n.pub</code>（公钥），按理来说应该生成在<code>.ssh</code>文件夹中，但是我的文件不知道为什么生成在了<code>C:\Users\WINDOWS</code>文件夹下，把它移到<code>.ssh</code>文件夹中也没什么影响。</p></blockquote><p>打开<code>n.pub</code>文件，将内容复制到账户B的ssh key中。</p><h2 id="配置ssh文件中的config"><a href="#配置ssh文件中的config" class="headerlink" title="配置ssh文件中的config"></a>配置ssh文件中的config</h2><p>原理我不懂，总之我改成了这样</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default Github</span></span><br><span class="line">Host github.com</span><br><span class="line">User 账号A的邮箱</span><br><span class="line">Hostname ssh.github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line">Port 443</span><br><span class="line"></span><br><span class="line"><span class="comment">#new github</span></span><br><span class="line">Host github-账号B名称</span><br><span class="line">HostName github.com</span><br><span class="line">User git</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/n</span><br><span class="line">Port 443</span><br></pre></td></tr></table></figure><h2 id="配置远程地址"><a href="#配置远程地址" class="headerlink" title="配置远程地址"></a>配置远程地址</h2><p>直接在github页面复制ssh的链接就行</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin git@github.com:账户B/仓库名.git</span><br></pre></td></tr></table></figure><h2 id="重新提交"><a href="#重新提交" class="headerlink" title="重新提交"></a>重新提交</h2><p>提交前查看一下现在是哪个分支</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br><span class="line"><span class="comment"># 查看当前使用分支</span></span><br><span class="line"></span><br><span class="line">git chekout hexo</span><br><span class="line"><span class="comment"># 切换到hexo分支上</span></span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line"><span class="comment"># 添加当前目录</span></span><br><span class="line"></span><br><span class="line">git commit -m <span class="string">&quot;更新&quot;</span></span><br><span class="line"><span class="comment"># 添加commit，引号内的内容随意</span></span><br><span class="line"></span><br><span class="line">git push origin hexo</span><br><span class="line"><span class="comment"># 将本地数据推送到hexo分支中</span></span><br></pre></td></tr></table></figure><p>推送成功！</p><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul><li><a href="https://blog.csdn.net/komojay/article/details/80480098">解决Permission to xxx denied to xxx问题</a></li><li><a href="https://blog.xiabee.cn/posts/hexo-git-backup/#/%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">利用git分支进行Hexo备份</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> github </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>hexo备份存档</title>
+      <link href="/posts/48088/"/>
+      <url>/posts/48088/</url>
+      
+        <content type="html"><![CDATA[<h1 id="突然想备份"><a href="#突然想备份" class="headerlink" title="突然想备份"></a>突然想备份</h1><p><code>hexo d</code>部署后，网站成功生成，github仓库中多出了一些新的文件。但这些文件不包括我们本地的配置文件。我在折腾一下午网站配置后猛然想起，本地配置也需要备份！</p><h1 id="Hexo博客备份"><a href="#Hexo博客备份" class="headerlink" title="Hexo博客备份"></a>Hexo博客备份</h1><h2 id="创建新分支"><a href="#创建新分支" class="headerlink" title="创建新分支"></a>创建新分支</h2><p>也可以创建新仓库，但我看的教程是新分支。就这样</p><p>在Github上博客仓库下创建一个新的分支hexo：</p><p><img src="https://github.com/dill626/picx-images-hosting/raw/master/20240830/image.1023tem2y1.webp" alt="创建新分支"></p><h2 id="克隆hexo分支"><a href="#克隆hexo分支" class="headerlink" title="克隆hexo分支"></a>克隆hexo分支</h2><p>把刚创建的hexo分支克隆到本地，随便什么地方都可以；把克隆下来的项目中的<code>.git</code>文件复制到hexo博客目录下</p><h2 id="开始备份"><a href="#开始备份" class="headerlink" title="开始备份"></a>开始备份</h2><p>进入博客根目录，执行如下命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;Blog源文件备份&quot;</span></span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure><p>即可以成功备份。</p><p>但此时我出现了报错：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permission to xxx（远程仓库账号B） denied to xxx（电脑上的另一个账号A）</span><br></pre></td></tr></table></figure><p>由于我电脑上两个账号在用同一个ssh，于是无法推送。解决方法在<a href="/posts/46454/" title="一台电脑两个github账号">一台电脑两个github账号</a>。</p><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul><li><a href="https://ayshansu.github.io/%E3%80%90Hexo%E3%80%91Hexo%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD%E5%88%B0Github/">【Hexo】Hexo博客备份到Github</a></li><li><a href="https://blog.xiabee.cn/posts/hexo-git-backup/#/%E6%8F%90%E4%BA%A4%E5%A4%87%E4%BB%BD">利用git分支进行Hexo备份</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习记录 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> github </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>爱、死、性</title>
       <link href="/posts/54582/"/>
       <url>/posts/54582/</url>
