@@ -6,7 +6,7 @@
   <link href="https://dill626.github.io/atom.xml" rel="self"/>
   
   <link href="https://dill626.github.io/"/>
-  <updated>2024-11-10T12:57:17.810Z</updated>
+  <updated>2025-09-12T04:20:57.820Z</updated>
   <id>https://dill626.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>来吧</title>
+    <link href="https://dill626.github.io/posts/23525/"/>
+    <id>https://dill626.github.io/posts/23525/</id>
+    <published>2025-09-12T04:16:19.000Z</published>
+    <updated>2025-09-12T04:20:57.820Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;太阳从公路上升起，空气里弥漫着尘土和青草的味道，我躺在路上，等待一辆车从我身上经过。汽车地盘短暂地掠过我的身体，就像一只鸟遮天蔽日的影子，从整片天空经过。机油，金属，而后是地球的蓝，蓝的天。&lt;/p&gt;
+&lt;p&gt;感受着冷的风，暖的太阳，幸福也从我身体里升起，六千度的疼痛是我作为人</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>调酒日记#8——威士忌姜汽水</title>
@@ -394,27 +416,6 @@
     
     
     <category term="hexo" scheme="https://dill626.github.io/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://dill626.github.io/posts/16107/"/>
-    <id>https://dill626.github.io/posts/16107/</id>
-    <published>2024-07-04T15:53:42.859Z</published>
-    <updated>2024-07-05T03:50:21.307Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
-        
-      
-    
-    
-    
     
   </entry>
   
